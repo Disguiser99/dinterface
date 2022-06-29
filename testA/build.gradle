@@ -1,0 +1,84 @@
+plugins {
+    id 'com.android.library'
+    id 'maven'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [DINTERFACE_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    implementation project(':dinterface-annotation')
+    annotationProcessor project(':dinterface-compiler')
+}
+
+
+
+// 配置参数
+ext {
+    REPO_PATH = uri('D:/repo')
+    PUBULISH_GROUP_ID = 'com.disguiser.dinterface'
+    PUBULISH_ARTIFACT_ID = 'Dinterface'
+    PUBULISH_VERSION = '1.0.0'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            //提交到远程服务器：传不上去难受
+//             repository(url: "https://gitee.com/wang_yong99/disguiser"){
+//                 authentication(userName: "wang_yong99", password: "cnm8885257")
+//             }
+            //   本地的Maven地址设置为D:/repo
+            repository(url: project.REPO_PATH)
+            pom.project {
+                groupId project.PUBULISH_GROUP_ID
+                artifactId project.PUBULISH_ARTIFACT_ID
+                version project.PUBULISH_VERSION
+            }
+            // 这干啥的
+//            pom.whenConfigured {
+////                p ->
+////                    p.dependencies = p.dependencies.findAll {
+////                        dep -> dep.groupId == ""
+////                    }
+////            }
+        }
+
+    }
+}

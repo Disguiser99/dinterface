@@ -1,0 +1,7 @@
+rootProject.name = "dinterface"
+include ':app'
+include ':dinterface-annotation'
+include ':dinterface-compiler'
+include ':testA'
+include ':testB'
+include ':testC'
